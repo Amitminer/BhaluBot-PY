@@ -1,0 +1,11 @@
+{
+    "python.REPL.enableREPLSmartSend": false,
+    "files.exclude": {
+        "__pycache__": true
+    },
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
