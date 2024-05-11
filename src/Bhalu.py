@@ -1,6 +1,6 @@
-import asyncio
-from dotenv import load_dotenv
 from Initializers.BotInitializer import BotInitializer
+from dotenv import load_dotenv
+import asyncio
 
 class BhaluBot:
     """

@@ -14,10 +14,12 @@ class Spam(commands.Cog):
             await ctx.send('Message length must not exceed 2000 characters.')
             return
 
+        # Rate limit handling can be implemented here
+
         try:
             for _ in range(count):
-                # await ctx.message.delete()
                 await ctx.send(message)
+            #   await ctx.message.delete()
         except Exception as e:
             print(f"An error occurred while sending messages: {e}")
             await ctx.send('An error occurred while sending messages. Please try again later.')
