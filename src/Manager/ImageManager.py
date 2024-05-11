@@ -3,9 +3,15 @@ from typing import Optional
 from .ConfigManager import ConfigManager
 
 class ImageManager:
+    """
+    Manages image-related operations, such as fetching random images from Unsplash.
+    """
 
     @staticmethod
     async def get_random_image(query: Optional[str] = None) -> Optional[str]:
+        """
+        Get a random image from Unsplash.
+        """
         try:
             access_key = ConfigManager.get_unsplash_key()
             if not access_key:
@@ -19,7 +25,10 @@ class ImageManager:
             response.raise_for_status()
 
             data = response.json()
-            image_url = data['urls']['regular']
+            image_url = data.get('urls', {}).get('regular')
+
+            if not image_url:
+                return "Error: No image URL found in the response."
 
             return image_url
         

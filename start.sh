@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python src/Bhalu.py
+cd src
+python Bhalu.py

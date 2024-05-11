@@ -1,29 +1,32 @@
-class Colors:
-    # ANSI escape codes for text colors
+import colorama
 
-    # Reset color to default
-    RESET = "\033[0m"
+class Colors:
+    # Initialize colorama
+    colorama.init()
+
+    # ANSI escape codes for text colors
+    RESET = colorama.Style.RESET_ALL
 
     # Black text
-    BLACK = "\033[30m"
+    BLACK = colorama.Fore.BLACK
 
     # Red text
-    RED = "\033[31m"
+    RED = colorama.Fore.RED
 
     # Green text
-    GREEN = "\033[32m"
+    GREEN = colorama.Fore.GREEN
 
     # Yellow text
-    YELLOW = "\033[33m"
+    YELLOW = colorama.Fore.YELLOW
 
     # Blue text
-    BLUE = "\033[34m"
+    BLUE = colorama.Fore.BLUE
 
     # Magenta text
-    MAGENTA = "\033[35m"
+    MAGENTA = colorama.Fore.MAGENTA
 
     # Cyan text
-    CYAN = "\033[36m"
+    CYAN = colorama.Fore.CYAN
 
     # White text
-    WHITE = "\033[37m"
+    WHITE = colorama.Fore.WHITE
