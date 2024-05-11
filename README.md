@@ -1,4 +1,4 @@
-```markdown
+
 # BhaluBot Discord Bot (Under Development)
 
 BhaluBot is a versatile Discord bot designed to elevate your server experience with interactive and entertaining features. From generating random images to providing insightful responses, BhaluBot is here to make your Discord server lively and engaging.
@@ -109,4 +109,3 @@ Bhalu Bot is open-source software licensed under the [MIT License](LICENSE).
 ## Credits:
 
 The Bhalu Discord Bot is created and maintained by [AmitxD](https://github.com/Amitminer), based on BhaluBot (php).
-```
