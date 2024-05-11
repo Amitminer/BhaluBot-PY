@@ -11,10 +11,8 @@ class RandomImage(commands.Cog):
     async def random(self, ctx, *, query: str):
         try:
             await ctx.channel.typing()
-            
-            for _ in range(5):  # Loop five times to send 5 URLs
-                image_url = await ImageManager.get_random_image(query)
-                await ctx.message.reply(image_url)
+            image_url = await ImageManager.get_random_image(query)
+            await ctx.message.reply(image_url)
       
         except Exception as e:
             await ctx.channel.typing()
