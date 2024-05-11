@@ -1,17 +1,24 @@
 import discord
 from discord.ext import commands
 
-from Manager.ConfigManager import *
-from Manager.CommandManager import *
+from Manager.ConfigManager import ConfigManager
+from Manager.CommandManager import CommandManager
 from Utils.colors import Colors
 from VersionInfo import VersionInfo
 
 class BotInitializer(Colors, VersionInfo):
+    """
+    Initializes and manages the Discord bot.
+    """
+
     def __init__(self):
         super().__init__()
         self.discord = None
 
     def init(self):
+        """
+        Initialize the Discord bot.
+        """
         # Get bot token from environment variables
         prefix = ConfigManager.get_prefix()
         
@@ -32,12 +39,13 @@ class BotInitializer(Colors, VersionInfo):
         async def on_ready():
             # Register all commands when the bot is ready
             await CommandManager.register_all(self.discord)
-            # Set bot's activity/status
-           # await BhaluManager.set_activity(self.discord)
             # Send login message
             await self.send_login_message()
 
     async def send_login_message(self):
+        """
+        Send a login message to the console.
+        """
         green = self.GREEN
         yellow = self.YELLOW
         blue = self.BLUE
@@ -50,12 +58,18 @@ class BotInitializer(Colors, VersionInfo):
         print(blue + "Made by AmitxD" + reset)
 
     async def connect(self):
+        """
+        Connect the bot to Discord.
+        """
         # Initialize and start the bot
         token = ConfigManager.get_bot_token()
         self.init()
         await self.discord.start(token)
 
     async def close(self):
+        """
+        Close the bot.
+        """
         # Close the bot
         await self.discord.close()
 

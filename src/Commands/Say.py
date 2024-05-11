@@ -10,7 +10,7 @@ class Say(commands.Cog):
             await ctx.send("You need to say something")
         else:
             await ctx.send(text)
-            await ctx.message.delete()  # Delete the command message
+            await ctx.message.delete()
 
 async def setup(client):
     await client.add_cog(Say(client))

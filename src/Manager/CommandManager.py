@@ -1,11 +1,15 @@
 from discord import Client
 
 class CommandManager:
-    # Array of available commands
-    Commands = [
+    """
+    Manages the registration of commands in the bot.
+    """
+    # List of available commands
+    COMMANDS = [
         "Ping",
         "Say",
-        "RandomImage"
+        "RandomImage",
+        "Spam"
     ]
 
     def __init__(self):
@@ -13,7 +17,10 @@ class CommandManager:
 
     @staticmethod
     async def register_all(client: Client) -> None:
-        for command_name in CommandManager.Commands:
+        """
+        Register all commands with the provided client.
+        """
+        for command_name in CommandManager.COMMANDS:
             cog_name = f"Commands.{command_name}"
             try:
                 await client.load_extension(cog_name)
