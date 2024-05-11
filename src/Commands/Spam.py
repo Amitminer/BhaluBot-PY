@@ -14,8 +14,6 @@ class Spam(commands.Cog):
             await ctx.send('Message length must not exceed 2000 characters.')
             return
 
-        # Rate limit handling can be implemented here
-
         try:
             for _ in range(count):
                 await ctx.send(message)
