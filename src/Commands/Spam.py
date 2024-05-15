@@ -6,9 +6,9 @@ class Spam(commands.Cog):
 
     @commands.command()
     async def spam(self, ctx, count: int, *, message: str):
-        if count <= 0 or count > 50:
-            await ctx.send('Count must be a positive number and smaller than or equal to 50.')
-            return
+        # if count <= 0 or count > 50:
+        #     await ctx.send('Count must be a positive number and smaller than or equal to 50.')
+        #     return
 
         if len(message) > 2000:
             await ctx.send('Message length must not exceed 2000 characters.')

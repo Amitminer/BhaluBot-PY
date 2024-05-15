@@ -1,2 +1,29 @@
+# config.yml
+
+# Prefix for bot commands
 Prefix: "++"
+
+# Owner ID of the bot (e.g., Discord user ID)
 owner_id: "000000000"
+
+# Generation configuration for the AI model
+generation_config:
+  temperature: 0.9                    # Temperature parameter for text generation
+  top_p: 1                            # Top p parameter for text generation
+  top_k: 0                            # Top k parameter for text generation
+  max_output_tokens: 2048             # Maximum number of output tokens
+  response_mime_type: "text/plain"    # Mime type of the response
+
+# Safety settings for filtering harmful content
+safety_settings:
+  - category: "HARM_CATEGORY_HARASSMENT"            # Category of harmful content (e.g., harassment)
+    threshold: "BLOCK_NONE"                         # Threshold for blocking (e.g., none)
+  - category: "HARM_CATEGORY_HATE_SPEECH"           # Category of harmful content (e.g., hate speech)
+    threshold: "BLOCK_NONE"                         # Threshold for blocking (e.g., none)
+  - category: "HARM_CATEGORY_SEXUALLY_EXPLICIT"     # Category of harmful content (e.g., sexually explicit)
+    threshold: "BLOCK_NONE"                         # Threshold for blocking (e.g., none)
+  - category: "HARM_CATEGORY_DANGEROUS_CONTENT"     # Category of harmful content (e.g., dangerous content)
+    threshold: "BLOCK_NONE"                         # Threshold for blocking (e.g., none)
+
+# IF your primary unsplash api key limit is reached.. use backup api instead..
+Use_Unsplash_key2: false

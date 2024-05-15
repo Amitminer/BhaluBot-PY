@@ -8,12 +8,12 @@ class ImageManager:
     """
 
     @staticmethod
-    async def get_random_image(query: Optional[str] = None) -> Optional[str]:
+    async def get_image(query: Optional[str] = None) -> Optional[str]:
         """
         Get a random image from Unsplash.
         """
         try:
-            access_key = ConfigManager.get_unsplash_key()
+            access_key = ImageManager._get_access_key()
             if not access_key:
                 return "Error: API key is not provided. Please set up the API key in the configuration."
 
@@ -43,3 +43,13 @@ class ImageManager:
         except Exception as e:
             print(f"Unexpected error: {e}")
             return "Error: An unexpected error occurred. Please try again later."
+
+    @staticmethod
+    def _get_access_key() -> Optional[str]:
+        """
+        Get the appropriate Unsplash access key based on configuration.
+        """
+        if ConfigManager.using_unsplash_key2():
+            return ConfigManager.get_unsplash_key2()
+        else:
+            return ConfigManager.get_unsplash_key()

@@ -1,4 +1,5 @@
 from discord import Client
+from Utils.colors import Colors
 
 class CommandManager:
     """
@@ -8,8 +9,9 @@ class CommandManager:
     COMMANDS = [
         "Ping",
         "Say",
-        "RandomImage",
-        "Spam"
+        "SearchImage",
+        "Spam",
+        "Ask"
     ]
 
     def __init__(self):
@@ -23,7 +25,9 @@ class CommandManager:
         for command_name in CommandManager.COMMANDS:
             cog_name = f"Commands.{command_name}"
             try:
+                green = Colors.GREEN
                 await client.load_extension(cog_name)
-                print(f"{command_name} command loaded.")
+                print(f"{green} + {command_name} command loaded.")
             except Exception as e:
-                print(f"Failed to load {command_name} command: {e}")
+                red = Colors.RED
+                print(f"{red} + Failed to load {command_name} command: {e}")
