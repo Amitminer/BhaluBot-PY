@@ -13,7 +13,7 @@ class Imagine(commands.Cog):
         self.bot = bot
         self.engine_id = "stable-diffusion-v1-6"
         self.api_host = "https://api.stability.ai"
-        self.api_key = "sk-noiyo2S3CmvptDLssOqe6uvdSrYRXj3B9XxcGC4C95GqDoBQ"
+        self.api_key = "stability ai api key here "
         self.executor = ThreadPoolExecutor(max_workers=3)
 
     @commands.command()
