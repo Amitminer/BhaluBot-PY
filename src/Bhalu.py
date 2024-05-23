@@ -1,30 +1,45 @@
-from Initializers.BotInitializer import BotInitializer
-from dotenv import load_dotenv
 import asyncio
+import logging
+from dotenv import load_dotenv
+from Initializers.BotInitializer import BotInitializer
+
 
 class BhaluBot:
     """
     Represents the Bhalu Discord bot.
+    Handles connecting and disconnecting the bot to the Discord server.
     """
 
-    @staticmethod
-    async def run(on_or_off: bool) -> None:
+    def __init__(self):
+        """
+        Initialize the BhaluBot by setting up and loading environment variables.
+        """
+        load_dotenv()
+        self.bhalu_init = BotInitializer()
+        # Setting up logging
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
+
+    async def run(self, connect: bool) -> None:
         """
         Run the Bhalu bot either connecting or disconnecting it.
-        """
-        bhalu_init = BotInitializer()
-        load_dotenv()
 
+        Parameters:
+        connect (bool): If True, connect the bot. If False, disconnect the bot.
+        """
         try:
-            if on_or_off:
-                await bhalu_init.connect()
-                print("Bot connected!")
+            if connect:
+                self.logger.info("Connecting the bot...")
+                await self.bhalu_init.connect()
+                self.logger.info("Bot connected successfully.")
             else:
-                await bhalu_init.close()
-                print("Bot closed.")
+                self.logger.info("Disconnecting the bot...")
+                await self.bhalu_init.close()
+                self.logger.info("Bot disconnected successfully.")
         except Exception as e:
-            print("An error occurred:", e)
+                self.logger.error("An error occurred: %s", e, exc_info=True)
+
 
 if __name__ == "__main__":
-    BOT = BhaluBot()
-    asyncio.run(BOT.run(True))
+    bot: BhaluBot = BhaluBot()
+    asyncio.run(bot.run(True))

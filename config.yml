@@ -4,7 +4,8 @@
 Prefix: "++"
 
 # Owner ID of the bot (e.g., Discord user ID)
-owner_id: "000000000"
+owner_ids:
+- 814660125511778315
 
 # Generation configuration for the AI model
 generation_config:

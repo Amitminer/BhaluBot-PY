@@ -1,33 +1,27 @@
-from discord import Client
-from Utils.colors import Colors
+from discord.ext import commands
 
 class CommandManager:
-    """
-    Manages the registration of commands in the bot.
-    """
-    # List of available commands
-    COMMANDS = [
-        "Ping",
-        "Say",
-        "SearchImage",
-        "Spam",
-        "Ask"
-    ]
+    
+    COMMANDS = {
+        "General": ["Ping", "Say", "Spam", "Help"],
+        "Fun": ["Ask", "Imagine", "Ship"],
+        "Utility": ["SearchImage", "Summarizer"],
+        "Admin": ["Shutdown"]
+    }
 
     def __init__(self):
         pass
 
     @staticmethod
-    async def register_all(client: Client) -> None:
+    async def register_all(client: commands.Bot) -> None:
         """
         Register all commands with the provided client.
         """
-        for command_name in CommandManager.COMMANDS:
-            cog_name = f"Commands.{command_name}"
-            try:
-                green = Colors.GREEN
-                await client.load_extension(cog_name)
-                print(f"{green} + {command_name} command loaded.")
-            except Exception as e:
-                red = Colors.RED
-                print(f"{red} + Failed to load {command_name} command: {e}")
+        for category, commands_list in CommandManager.COMMANDS.items():
+            for command_name in commands_list:
+                cog_name = f"Commands.{category}.{command_name}"
+                try:
+                    await client.load_extension(cog_name)
+                    print(f"+ {command_name} command loaded in {category} category.")
+                except Exception as e:
+                    print(f"Failed to load {command_name} command in {category} category: {e}")

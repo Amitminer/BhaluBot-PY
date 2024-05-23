@@ -1,4 +1,4 @@
 @echo off
 cd src
-python Bhalu.py
+python3 Bhalu.py
 

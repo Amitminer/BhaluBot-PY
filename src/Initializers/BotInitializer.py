@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
-
 from Manager.ConfigManager import ConfigManager
 from Manager.CommandManager import CommandManager
 from Utils.colors import Colors
 from VersionInfo import VersionInfo
+
 
 class BotInitializer(Colors, VersionInfo):
     """
@@ -21,26 +21,41 @@ class BotInitializer(Colors, VersionInfo):
         """
         # Get bot token from environment variables
         prefix = ConfigManager.get_prefix()
-        
+
         # Define intents for the Discord client
         intents = discord.Intents.default()
         intents.message_content = True
-        
+
         # Initialize Discord bot with defined intents
         self.discord = commands.Bot(
             command_prefix=prefix,
             help_command=None,
             case_insensitive=True,
             self_bot=False,
-            intents=intents
+            intents=intents,
         )
 
         @self.discord.event
         async def on_ready():
             # Register all commands when the bot is ready
             await CommandManager.register_all(self.discord)
-            # Send login message
+            await self.discord.change_presence(
+                status=discord.Status.dnd,
+                activity=discord.Activity(
+                    name="github.com/Amitminer", type=discord.ActivityType.watching
+                ),
+            )
             await self.send_login_message()
+
+        @self.discord.event
+        async def on_command_error(ctx, error):
+            if isinstance(error, commands.CommandNotFound):
+                await ctx.message.reply(
+                    f"Command not found. Use `{prefix}help` to see available commands."
+                )
+            else:
+                # For any other errors, raise the error to allow default handling
+                raise error
 
     async def send_login_message(self):
         """
@@ -72,6 +87,7 @@ class BotInitializer(Colors, VersionInfo):
         """
         # Close the bot
         await self.discord.close()
+
 
 if __name__ == "__main__":
     # Create BotInitializer instance and connect the bot
