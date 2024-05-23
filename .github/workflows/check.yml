@@ -2,16 +2,34 @@ name: BhaluBot
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   checkFiles:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    - run: pip install -r requirements.txt
-    - run: chmod +x start.sh 
-    - run: bash start.sh
+        
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Convert line endings for start.sh
+      run: |
+        sudo apt-get install dos2unix
+        dos2unix start.sh
+
+    - name: Make start.sh executable
+      run: chmod +x start.sh 
+
+    - name: Run the bot
+      run: bash start.sh
