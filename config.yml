@@ -7,11 +7,12 @@ Prefix: "++"
 owner_ids:
 - 814660125511778315
 
+gemini_model_id: "gemini-1.5-flash-002"
 # Generation configuration for the AI model
 generation_config:
-  temperature: 0.9                    # Temperature parameter for text generation
-  top_p: 1                            # Top p parameter for text generation
-  top_k: 0                            # Top k parameter for text generation
+  temperature: 1                    # Temperature parameter for text generation
+  top_p: 0.95                           # Top p parameter for text generation
+  top_k: 40                            # Top k parameter for text generation
   max_output_tokens: 2048             # Maximum number of output tokens
   response_mime_type: "text/plain"    # Mime type of the response
 
@@ -28,3 +29,7 @@ safety_settings:
 
 # IF your primary unsplash api key limit is reached.. use backup api instead..
 Use_Unsplash_key2: false
+
+fine_tune:
+  prompt:
+    - "Your custom data to fine tune ai chatbot"

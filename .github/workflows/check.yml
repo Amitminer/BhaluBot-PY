@@ -1,36 +1,30 @@
-name: BhaluBot
+name: CheckLints
 
-on:
-  push:
-    branches:
-      - dev
-  pull_request:
-    branches:
-      - dev
-      
+on: [push]
 
 jobs:
-  checkFiles:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
       with:
-        python-version: '3.10'
-        
+        python-version: ${{ matrix.python-version }}
+
+    # Install dependencies
     - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Convert line endings for start.sh
       run: |
-        sudo apt-get install dos2unix
-        dos2unix start.sh
-
-    - name: Make start.sh executable
-      run: chmod +x start.sh 
-
-    - name: Run the bot
-      run: bash start.sh
+        python -m pip install --upgrade pip
+        pip install pylint
+        pip install -r requirements.txt
+    
+    # Run linting with pylint
+    - name: Analysing the code with pylint
+      run: |
+        pylint ./src --disable=missing-module-docstring,invalid-name,import-error,too-few-public-methods

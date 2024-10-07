@@ -1,9 +1,13 @@
+"""
+This module provides version information for the application.
+"""
+
 class VersionInfo:
     """
     Represents version information for the application.
     """
-    version = '1.0.0'
-    release_date = '2024-07-05'
+    version = '2.0.0'
+    release_date = '2024-10-07'
 
     @staticmethod
     def get_version() -> str:

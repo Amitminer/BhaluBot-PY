@@ -1,50 +1,64 @@
 import discord
 from discord.ext import commands
-from Manager.ConfigManager import ConfigManager
-
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def help(self, ctx):
-        prefix = ConfigManager().get_prefix()
+    async def help(self, ctx, category=None):
+        prefix = self.bot.command_prefix
+        embed = discord.Embed(title="Bot Commands", color=discord.Color.blue())
 
-        embed = discord.Embed(title="Bot Commands", color=0x00FF00)
+        categories = {
+            "admin": {
+                "description": "Administrative commands",
+                "commands": {
+                    "ban": f"{prefix}ban @user1 @user2 [reason] - Simulates banning users (for fun)",
+                    "shutdown": f"{prefix}shutdown - Shuts down the bot (owner only)"
+                }
+            },
+            "fun": {
+                "description": "Entertainment commands",
+                "commands": {
+                    "ask": f"{prefix}ask [question] - Ask the bot a question (AI-powered)",
+                    "food": f"{prefix}food [category] - Get a random food image",
+                    "foodlist": f"{prefix}foodlist - List all available food categories",
+                    "hack": f"{prefix}hack @user - Simulate hacking a user (prank)",
+                    "imagine": f"{prefix}imagine [prompt] - Generate an image based on prompt (AI-powered)",
+                    "ship": f"{prefix}ship @user1 @user2 - Ship two users with a compatibility percentage",
+                    "tts": f"{prefix}tts [language] [text] [-f filename] - Generate and send a TTS audio file"
+                }
+            },
+            "general": {
+                "description": "General purpose commands",
+                "commands": {
+                    "ping": f"{prefix}ping - Check bot's latency",
+                    "say": f"{prefix}say [message] - Make the bot say a message",
+                    "help": f"{prefix}help [category] - Show this help message"
+                }
+            },
+            "utility": {
+                "description": "Useful utility commands",
+                "commands": {
+                    "currency": f"{prefix}currency [from] [to] [amount] - Convert currency",
+                    "search": f"{prefix}search [number] [query] - Search for images",
+                    "summarize": f"{prefix}summarize [url/text] - Summarize content from a URL or text"
+                }
+            }
+        }
 
-        general_commands = f"""
-        **General:**
-        - `{prefix}say "your message"`: Make the bot say something.
-            - Example: `{prefix}say Hello!`
-        - `{prefix}ping`: Check the bot's latency.
-            - Example: `{prefix}ping`
-        - `{prefix}spam {{count}} "your message to spam"`: Spam a message a certain number of times.
-            - Example: `{prefix}spam 5 "Spamming message"`
-        """
-        fun_commands = f"""
-        **Fun:**
-        - `{prefix}ask "your question to ask ai!"`: Ask a question to the AI.
-            - Example: `{prefix}ask What is the meaning of life?`
-        - `{prefix}imagine "your query"`: Generate an AI-generated image based on the query.
-            - Example: `{prefix}imagine sunset`
-        - `{prefix}ship [user1] [user2]`: Ship two users together.
-            - Example: `{prefix}ship @User1 @User2`
-        """
-        utility_commands = f"""
-        **Utility:**
-        - `{prefix}search count "your query"`: Get a random image related to your query.
-            - Example: `{prefix}search count cat`
-        - `{prefix}summarize "link or big paragraph"`: Summarize a link or a big paragraph.
-            - Example: `{prefix}summarize "https://example.com"`
-        """
+        if category and category.lower() in categories:
+            cat = categories[category.lower()]
+            embed.description = cat["description"]
+            for cmd, desc in cat["commands"].items():
+                embed.add_field(name=cmd.capitalize(), value=desc, inline=False)
+        else:
+            embed.description = "Use `{}help [category]` for more details on each category.".format(prefix)
+            for cat, data in categories.items():
+                embed.add_field(name=cat.capitalize(), value=data["description"], inline=False)
 
-        embed.add_field(name="General Commands", value=general_commands, inline=False)
-        embed.add_field(name="Fun Commands", value=fun_commands, inline=False)
-        embed.add_field(name="Utility Commands", value=utility_commands, inline=False)
-
-        await ctx.message.reply(embed=embed)
-
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Help(bot))

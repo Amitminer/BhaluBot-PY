@@ -1,8 +1,11 @@
+"""
+This module defines the BhaluBot class for interacting with the Discord API.
+"""
+
 import asyncio
 import logging
 from dotenv import load_dotenv
 from Initializers.BotInitializer import BotInitializer
-
 
 class BhaluBot:
     """
@@ -36,10 +39,9 @@ class BhaluBot:
                 self.logger.info("Disconnecting the bot...")
                 await self.bhalu_init.close()
                 self.logger.info("Bot disconnected successfully.")
-        except Exception as e:
-                self.logger.error("An error occurred: %s", e, exc_info=True)
-
+        except (ConnectionError, TimeoutError) as e:  # Catch specific exceptions
+            self.logger.error("An error occurred: %s", e, exc_info=True)
 
 if __name__ == "__main__":
-    bot: BhaluBot = BhaluBot()
-    asyncio.run(bot.run(True))
+    bot = BhaluBot()
+    asyncio.run(bot.run(connect=True))  # Pass `True` to connect, `False` to disconnect

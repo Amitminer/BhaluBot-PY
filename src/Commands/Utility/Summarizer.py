@@ -1,3 +1,4 @@
+import re
 from discord.ext import commands
 import aiohttp
 from bs4 import BeautifulSoup
@@ -6,26 +7,32 @@ from Manager.ChatManager import ChatManager
 class Summarizer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.url_pattern = re.compile(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
 
     @commands.command()
     async def summarize(self, ctx, *, content):
         """Summarizes the given URL content or paragraph and replies with the summary."""
         if not content:
-            await ctx.message.reply("You need to give me a website link or a paragraph to summarize it.")
+            await ctx.reply("Please provide a website link or a paragraph to summarize.")
             return
 
-        try:
-            await ctx.channel.typing()
-            if content.startswith("http://") or content.startswith("https://"):
-                # Handle URL
-                summarized_text = await self.summarize_url(content)
-            else:
-                summarized_text = await ChatManager().ask_gemini_ai(f"summarize this paragraph \"{content}\'")
+        async with ctx.typing():
+            try:
+                if self.url_pattern.match(content):
+                    summarized_text = await self.summarize_url(content)
+                else:
+                    summarized_text = await self.summarize_text(content)
 
-            await ctx.message.reply(summarized_text)
-        except Exception as e:
-            print(e)
-            await ctx.send(f"An error occurred: {e}", delete_after=10)
+                if len(summarized_text) > 2000:
+                    chunks = [summarized_text[i:i+2000] for i in range(0, len(summarized_text), 2000)]
+                    for chunk in chunks:
+                        await ctx.reply(chunk)
+                else:
+                    await ctx.reply(summarized_text)
+
+            except Exception as e:
+                error_message = f"An error occurred: {str(e)}"
+                await ctx.reply(error_message)
 
     async def summarize_url(self, url):
         """Fetches the content of the URL, extracts the text, and summarizes it."""
@@ -35,20 +42,31 @@ class Summarizer(commands.Cog):
                     raise Exception(f"Failed to retrieve the webpage. Status code: {response.status}")
                 html_content = await response.text()
 
-        # Extract the text from the HTML
         soup = BeautifulSoup(html_content, 'html.parser')
-        paragraphs = soup.find_all('p')
+        
+        # Try to get the main content, fallback to all paragraphs if not found
+        main_content = soup.find('main') or soup.find('article') or soup
+        paragraphs = main_content.find_all('p')
+        
         text_content = ' '.join([para.get_text() for para in paragraphs])
 
-        # Call the summarization API (using ChatManager)
-        summarized_text = await ChatManager().ask_gemini_ai(f"summarize this paragraph/blog: \"{text_content}\"")
+        if len(text_content) < 100:
+            raise Exception("The extracted content is too short to summarize.")
+
+        return await self.summarize_text(text_content, is_url=True)
+
+    async def summarize_text(self, content, is_url=False):
+        """Summarizes the given text content."""
+        prefix = "summarize this webpage content:" if is_url else "summarize this paragraph:"
+        prompt = f"{prefix} \"{content}\""
+
+        summarized_text = await ChatManager().ask_gemini_ai(prompt)
         
         if not summarized_text:
-            raise Exception("Failed to summarize the text. The summarization response was empty.")
+            raise Exception("Failed to generate a summary. The AI response was empty.")
 
         return summarized_text
 
 async def setup(bot):
     """Sets up the Summarizer cog."""
     await bot.add_cog(Summarizer(bot))
-
