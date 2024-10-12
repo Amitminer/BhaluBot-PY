@@ -27,16 +27,16 @@ class Ask(commands.Cog):
 
         try:
             await ctx.channel.typing()  # Show the typing indicator
-
-            # Process based on whether an image is attached or not
+            query = f"[{ctx.author.display_name}]" + f" -> {question}" # For Username use {ctx.author.name}
+            # print(query) -> debug purpose 
             if ctx.message.attachments:
-                await self.process_image_attachments(ctx, question)
+                await self.process_image_attachments(ctx, query)
             else:
-                response = await ChatManager().ask_gemini_ai(question)
+                response = await ChatManager().ask_gemini_ai(query)
                 await self.send_split_message(ctx, response)
 
         except Exception as e:
-            await ctx.send(f"An error occurred: {e}", delete_after=3)
+            await ctx.send(f"An error occurred: {e}", delete_after=10)
 
     async def process_image_attachments(self, ctx, question: Optional[str] = None):
         """
