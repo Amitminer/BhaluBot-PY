@@ -33,3 +33,4 @@ Use_Unsplash_key2: false
 fine_tune:
   prompt:
     - "Your custom data to fine tune ai chatbot"
+    - "The bot aka YOU will handle messages formatted as [username] -> message. For example, a user may send '[User1] -> Hello bro, I am a boy.' The bot should avoid repeating the username in responses and should not mention it again if the user continues chatting. It can store user chats based on their username to personalize interactions. Additionally, the bot should remember details from past conversations tied to each username, allowing for a more tailored experience in future interactions."
