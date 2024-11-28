@@ -14,6 +14,7 @@ click==8.1.7
 colorama==0.4.6
 discord.py==2.4.0
 eval_type_backport==0.2.0
+Flask==3.0.0
 filelock==3.16.1
 frozenlist==1.4.1
 google-ai-generativelanguage==0.6.10
@@ -56,4 +57,5 @@ typer==0.12.5
 typing_extensions==4.12.2
 uritemplate==4.1.1
 urllib3==2.2.3
+keep-alive==0.0.1
 yarl==1.13.1
