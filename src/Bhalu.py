@@ -6,7 +6,7 @@ import asyncio
 import logging
 from dotenv import load_dotenv
 from Initializers.BotInitializer import BotInitializer
-from .KeepAlive import keep_alive
+from KeepAlive import keep_alive
 
 class BhaluBot:
     """
