@@ -6,6 +6,7 @@ import asyncio
 import logging
 from dotenv import load_dotenv
 from Initializers.BotInitializer import BotInitializer
+from keep_alive import keep_alive
 
 class BhaluBot:
     """
@@ -44,4 +45,5 @@ class BhaluBot:
 
 if __name__ == "__main__":
     bot = BhaluBot()
+    keep_alive()
     asyncio.run(bot.run(connect=True))  # Pass `True` to connect, `False` to disconnect
